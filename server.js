@@ -1,7 +1,8 @@
 const express = require('express');
 const multer = require('multer');
+const path = require('path');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Set up storage for uploaded files
 const storage = multer.diskStorage({
@@ -15,12 +16,19 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Serve the static HTML/CSS/JS files
-app.use(express.static('public'));
+// Serve static files from the "public" directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Handle file uploads
 app.post('/upload', upload.array('file'), (req, res) => {
-    res.status(200).send('File uploaded successfully');
+    // Simulate a response with JSON data (file details)
+    const uploadedFiles = req.files.map(file => ({
+        name: file.originalname,
+        size: file.size,
+        mimetype: file.mimetype,
+    }));
+
+    res.status(200).json(uploadedFiles);
 });
 
 app.listen(port, () => {
