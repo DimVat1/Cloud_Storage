@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Handle file uploads
 app.post('/upload', upload.array('file'), (req, res) => {
-    // Simulate a response with JSON data (file details)
+    // Send a response with JSON data (file details)
     const uploadedFiles = req.files.map(file => ({
         name: file.originalname,
         size: file.size,
