@@ -20,20 +20,21 @@ document.addEventListener('DOMContentLoaded', function () {
             formData.append('file', files[i]);
         }
 
+        // Send a POST request to the server endpoint for file uploads
         fetch('/upload', {
             method: 'POST',
             body: formData,
         })
         .then(response => {
             if (response.status === 200) {
-                return response.json(); // Assuming the server responds with JSON data
+                return response.json();
             } else {
                 throw new Error('File upload failed');
             }
         })
         .then(data => {
             console.log(data); // Server response data (e.g., file details)
-            updateFileList(data); // Call the updateFileList function with the server response data
+            updateFileList(data);
         })
         .catch(error => {
             console.error(error);
@@ -42,16 +43,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to update the file list with data from the server
     function updateFileList(data) {
-        // Assuming data is an array of file details received from the server
         const ul = document.createElement('ul');
-        
+
         data.forEach(file => {
             const li = document.createElement('li');
             li.textContent = file.name;
             ul.appendChild(li);
         });
 
-        // Clear the existing file list and add the updated list
         fileList.innerHTML = '';
         fileList.appendChild(ul);
     }
